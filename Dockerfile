@@ -14,6 +14,8 @@ MAINTAINER Alex Mandel, tech@wildintellect.com
 
 # Set correct environment variables.
 ENV HOME /root
+#ENV PG_VERSION `apt-cache show postgresql -v |grep Version | awk -F '[: +]' '{print $3}' | head -n 1`
+ENV PG_VERSION 9.3
 
 # Regenerate SSH host keys. baseimage-docker does not contain any, so you
 # have to do that yourself. You may also comment out this instruction; the
@@ -29,11 +31,10 @@ RUN apt-get update && apt-get install -y wget ca-certificates
 # Add Ubuntugis-unstable repository
 RUN apt-add-repository -y ppa:ubuntugis/ubuntugis-unstable
 
-RUN PG_Version=`apt-cache show postgresql -v |grep Version | awk -F '[: +]' '{print $3}' | head -n 1`
 # Update and Install packages
 RUN apt-get update && apt-get install --yes \
     postgis \
-    "postgresql-$PG_VERSION-postgis-2.1"
+    postgresql-$PG_VERSION-postgis-2.1
 
 
 # ---------- SETUP --------------
